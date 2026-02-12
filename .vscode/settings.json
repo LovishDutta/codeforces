@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "random": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "cmath": "cpp",
+        "unordered_map": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp",
+        "valarray": "cpp"
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
+}
