@@ -43,6 +43,18 @@ ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
             if(ansvis[i]) continue;
             int cnt=(!vis[i]);
             for(auto &it:adj[i]) if(!vis[it]) cnt++;
+            if(cnt==2){
+                ans.push_back(i+1);
+                ansvis[i]=1;
+                vis[i]=1;
+                for(auto &it:adj[i]) vis[it]=1;
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(ans.size()==n/2) break;
+            if(ansvis[i]) continue;
+            int cnt=(!vis[i]);
+            for(auto &it:adj[i]) if(!vis[it]) cnt++;
             if(cnt>0){
                 ans.push_back(i+1);
                 ansvis[i]=1;

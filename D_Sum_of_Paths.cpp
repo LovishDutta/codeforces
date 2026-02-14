@@ -3,7 +3,7 @@ using namespace std;
 int dp[10][10];
 int recur(int i,int j,vector<int>& arr,int k){
     if(i==arr.size()||i<0) return 0;
-    if(j==f0) return dp[i][j]=1;
+    if(j==0) return dp[i][j]=1;
     if(dp[i][j]!=-1) return dp[i][j];
     int cnt=0;
     cnt+=recur(i-1,j-1,arr,k);
@@ -28,5 +28,4 @@ int main(){
         }
         cout<<endl;
     }
-
 }
