@@ -12,7 +12,7 @@ ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
         cin>>s;
         int ans=0;
         k++;
-        for(int i=0;i<=n-k;i++){
+        for(int i=0;i<n-2;i++){
             if(s[i]!=s[i+1]) ans+=(k-1);
         }
         cout<<ans<<endl;
