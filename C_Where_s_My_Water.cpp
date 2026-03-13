@@ -1,37 +1,73 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define int long long
-int recur(int idx,int cnt,int prev,vector<int>& arr,vector<pair<int,int>>& vec,vector<int>& pref,vector<vector<vector<int>>>& dp,int m){
-    if(idx>=arr.size()||cnt==2) return 0;
-    if(dp[cnt][idx][prev]!=-1) return dp[cnt][idx][prev];
-    int notpick=recur(idx+1,cnt,prev,arr,vec,pref,dp,m);
-    int prevv=(vec[idx].first==0?0:(pref[vec[idx].first-1]-(vec[idx].first)*(m-arr[vec[idx].first])));
-    if(cnt!=0&&prev>vec[idx].first) prevv=pref[prev];
-    int pick=(pref[idx]-prevv)+(pref[vec[idx].second]-pref[idx]+(arr.size()-1-vec[idx].second)*(m-arr[vec[idx].second]))+recur(vec[idx].second+1,cnt+1,vec[idx].second,arr,vec,pref,dp,m);
-    return dp[cnt][idx][prev]=max(pick,notpick);
-}
+class SegmentTree {
+public:
+    int n;
+    vector<int> tree;
+    vector<long long> arr;
+    SegmentTree(vector<long long>& a) {
+        arr = a;
+        n = a.size();
+        tree.resize(4*n);
+        build(0,0,n-1);
+    }
+    void build(int node,int l,int r){
+        if(l==r){
+            tree[node]=l;
+            return;
+        }
+        int mid=(l+r)/2;
+        build(2*node+1,l,mid);
+        build(2*node+2,mid+1,r);
+        int left=tree[2*node+1];
+        int right=tree[2*node+2];
+        tree[node] = (arr[left] >= arr[right] ? left : right);
+    }
+    int query(int node,int start,int end,int l,int r){
+        if(r < start || end < l)
+            return -1;
+        if(l <= start && end <= r)
+            return tree[node];
+        int mid=(start+end)/2;
+        int left=query(2*node+1,start,mid,l,r);
+        int right=query(2*node+2,mid+1,end,l,r);
+        if(left==-1) return right;
+        if(right==-1) return left;
+        return (arr[left] >= arr[right] ? left : right);
+    }
+    int rangeMaxIndex(int l,int r){
+        return query(0,0,n-1,l,r);
+    }
+};
 signed main(){
 ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
     int tc=1;
     cin>>tc;    
     while(tc--){
-        int n,m;
+        int n,m,ans=0;
         cin>>n>>m;
         vector<int> arr(n);
-        vector<int> pref(n);
-        vector<pair<int,int>> vec;
+        for(int i=0;i<n;i++) cin>>arr[i];
+        SegmentTree st(arr);
+        vector<int> vec(n);
         for(int i=0;i<n;i++){
-             cin>>arr[i];
-             if(i==0) pref[0]=(m-arr[0]);
-             else pref[i]=pref[i-1]+(m-arr[i]);
+            int a=(m-arr[i]),maxi=arr[i],maxi2=arr[i];
+            for(int j=i+1;j<n;j++){
+                maxi=max(maxi,arr[j]);
+                a+=(m-maxi);
+            }
+            for(int j=i-1;j>=0;j--){
+                maxi2=max(maxi2,arr[j]);
+                a+=(m-maxi2);
+            }
+            vec[i]=a;
         }
         for(int i=0;i<n;i++){
-            int j=i,k=i;
-            while(j<n-1&&arr[j+1]>=arr[j]) j++;
-            while(k>0&&arr[k-1]>=arr[k]) k--;
-            vec.push_back({k,j});
+            for(int j=i;j<n;j++){
+                ans=max(ans,vec[i]+vec[j]-vec[st.rangeMaxIndex(i,j)]);
+            }
         }
-        vector<vector<vector<int>>> dp(3,vector<vector<int>>(n+1,vector<int>(n+1,-1)));
-        cout<<recur(0,0,0,arr,vec,pref,dp,m)<<endl;
+        cout<<ans<<endl;
     }
 }
