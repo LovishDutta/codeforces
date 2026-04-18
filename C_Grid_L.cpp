@@ -16,7 +16,7 @@ ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
                 if(a%2 ==1&&b%2==1){
                     int n =(a-1)/2;
                     int m =(b-1)/2;
-                    if(n>0&& m >0&&q <= min(n * (m + 1), m * (n + 1))){
+                    if(n>0&& m >0&&q <= (max(n,m)+1)*min(n,m)){
                         cout <<n<<" "<<m<<endl;
                         flag = true;
                         break;
