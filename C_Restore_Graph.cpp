@@ -36,6 +36,10 @@ ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
                 ans.push_back({arr[i-1][idx],it});
                 if(deg[arr[i-1][idx]]==k) idx++;
             }
+            else{
+                cout<<-1<<endl;
+                return 0;
+            }
         }
     }
     cout<<ans.size()<<endl;
