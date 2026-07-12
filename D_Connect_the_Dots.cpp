@@ -50,9 +50,10 @@ ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
                 sort(arr[i][j].begin(),arr[i][j].end());
                 int prev=arr[i][j][0].first;
                 for(int z=0;z<arr[i][j].size();z++){
-                    int start=max(prev,arr[i][j][z].first);
+                    int start=arr[i][j][z].first;
                     int end=arr[i][j][z].second;
-                    prev=end;
+                    if(start<prev) start=prev;
+                    prev=max(prev,end);
                     for(int y=start;y<=end;y+=i){
                         ds.uni(start,y);
                     }
